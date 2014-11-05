@@ -115,6 +115,8 @@ public class KidsActivity extends Activity {
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+        /* Displaying the image on activity - Here bitmap is used for reading the images in resources 
+         * */
         ImageView imgView = null;
         Bitmap bmpOrig = null;
 
@@ -137,7 +139,9 @@ public class KidsActivity extends Activity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_kids, container, false);
+            /*Find the image view for the created Fragment */
             imgView = (ImageView)rootView.findViewById(R.id.imageShow);
+            /*Read the resource file and update it in bitmap*/
             bmpOrig = BitmapFactory.decodeResource(this.getResources(),R.drawable.a_img);
             imgView.setImageBitmap(bmpOrig);
             return rootView;
