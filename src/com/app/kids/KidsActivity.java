@@ -20,6 +20,7 @@ import android.widget.ImageView;
 
 public class KidsActivity extends Activity {
 
+	public static final String LOG_TAG = "KidsApp";
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -131,6 +132,7 @@ public class KidsActivity extends Activity {
         }
 
         public PlaceholderFragment() {
+			Log.i(LOG_TAG, "PlaceholderFragment::begins...");
         }
 
         @Override
