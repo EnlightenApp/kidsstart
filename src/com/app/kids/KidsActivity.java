@@ -2,23 +2,21 @@ package com.app.kids;
 
 import java.util.Locale;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 
-public class KidsActivity extends Activity {
+public class KidsActivity extends FragmentActivity {
 
 	/**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -30,6 +28,17 @@ public class KidsActivity extends Activity {
      */
     SectionsPagerAdapter mSectionsPagerAdapter;
 
+    
+    // A static dataset to back the ViewPager adapter
+    public final static Integer[] imageResIds = new Integer[] {
+            R.drawable.a_img, R.drawable.b_img, R.drawable.c_img, R.drawable.d_img,
+            R.drawable.e_img, R.drawable.f_img, R.drawable.g_img, R.drawable.h_img, 
+            R.drawable.i_img, R.drawable.j_img, R.drawable.k_img, R.drawable.l_img,
+            R.drawable.m_img, R.drawable.n_img, R.drawable.o_img, R.drawable.p_img,
+            R.drawable.q_img, R.drawable.r_img, R.drawable.s_img, R.drawable.t_img,
+            R.drawable.u_img, R.drawable.v_img, R.drawable.w_img, R.drawable.x_img,
+            R.drawable.y_img, R.drawable.z_img};
+    
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -40,33 +49,12 @@ public class KidsActivity extends Activity {
         setContentView(R.layout.activity_kids);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager(),imageResIds.length);
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);       
       }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.kids, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -74,8 +62,10 @@ public class KidsActivity extends Activity {
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        private int mSize = 0;
+        public SectionsPagerAdapter(FragmentManager fm, int size) {
             super(fm);
+            mSize = size;
         }
 
         @Override
@@ -87,8 +77,8 @@ public class KidsActivity extends Activity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            // Show all pages.
+            return mSize;
         }
 
         @Override
@@ -114,12 +104,11 @@ public class KidsActivity extends Activity {
          * The fragment argument representing the section number for this
          * fragment.
          */
-        private static final String ARG_SECTION_NUMBER = "section_number";
+        private static final String IMG_RES_ID = "IMG_RES_ID";
         /* Displaying the image on activity - Here bitmap is used for reading the images in resources 
          * */
-        ImageView imgView = null;
-        Bitmap bmpOrig = null;
-
+        ImageView mImageView = null;
+        private int mImageNum;
         /**
          * Returns a new instance of this fragment for the given section
          * number.
@@ -127,7 +116,7 @@ public class KidsActivity extends Activity {
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putInt(IMG_RES_ID, sectionNumber);
             fragment.setArguments(args);
             return fragment;
         }
@@ -136,15 +125,26 @@ public class KidsActivity extends Activity {
         }
 
         @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            mImageNum = getArguments() != null ? getArguments().getInt(IMG_RES_ID) : -1;
+            mImageNum--; // Start from 'A' Letter
+        }
+        
+        @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_kids, container, false);
             /*Find the image view for the created Fragment */
-            imgView = (ImageView)rootView.findViewById(R.id.imageShow);
-            /*Read the resource file and update it in bitmap*/
-            bmpOrig = BitmapFactory.decodeResource(this.getResources(),R.drawable.a_img);
-            imgView.setImageBitmap(bmpOrig);
+            mImageView = (ImageView)rootView.findViewById(R.id.imageShow);
             return rootView;
+        }
+        
+        @Override
+        public void onActivityCreated(Bundle savedInstanceState) {
+            super.onActivityCreated(savedInstanceState);
+            final int resId = KidsActivity.imageResIds[mImageNum];
+            mImageView.setImageResource(resId); // Load image into ImageView
         }
     }
 
