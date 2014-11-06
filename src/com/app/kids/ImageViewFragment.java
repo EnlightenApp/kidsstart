@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.app.Util.KidsLog;
+
 /**
  * A ImageViewFragment containing a simple view to display the images.
  */
@@ -20,6 +21,11 @@ public class ImageViewFragment extends Fragment {
      * fragment.
      */
     private static final String IMG_RES_ID = "IMG_RES_ID";
+
+    /* KEY_IMG_NUM key is used for save the image number and retrive during recreation of activity 
+     */
+    private static final String KEY_IMG_NUM = "IMAGE_NUM";
+
     /* Displaying the image on activity - Here bitmap is used for reading the images in resources 
      * */
     ImageView mImageView = null;
@@ -50,7 +56,6 @@ public class ImageViewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mImageNum = getArguments() != null ? getArguments().getInt(IMG_RES_ID) : -1;
-        //mImageNum--; // Start from 'A' Letter
         KidsLog.i(TAG, "onCreate Called ");
     }
 
@@ -61,6 +66,9 @@ public class ImageViewFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_kids, container, false);
         /*Find the image view for the created Fragment */
         mImageView = (ImageView)rootView.findViewById(R.id.imageShow);
+        if (savedInstanceState != null) {
+            mImageNum = savedInstanceState.getInt(KEY_IMG_NUM, 0);
+        }
         return rootView;
     }
 
@@ -100,6 +108,7 @@ public class ImageViewFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         KidsLog.i(TAG, "onSaveInstanceState Called ");
+        outState.putInt(KEY_IMG_NUM, mImageNum);
     }
 
     @Override
