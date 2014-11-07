@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class KidsLog {
 
-    private static String APP_TAG = "KidsStart";
+    private static final String APP_TAG = "KidsStart";
 
     public static void i(String log) {
         Log.i(APP_TAG, log);

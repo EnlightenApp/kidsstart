@@ -15,7 +15,7 @@ import com.app.Util.KidsLog;
  */
 public class ImageViewFragment extends Fragment {
 
-    private static String TAG = "ImageViewFragment";
+    private static final String TAG = "ImageViewFragment";	// added final keyword since TAG reference a constant
     /**
      * The fragment argument representing the section number for this
      * fragment.
